@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# 统一用 bash + 严格模式
 set -euo pipefail
 
 # 清理
@@ -24,13 +23,13 @@ rm -f dist/CNAME || true
 cp _headers dist/_headers
 cp 404.html dist/404.html
 
-# 需要处理的页面（可按需增减）
+# 需要处理的页面
 PAGES=(index.html book.html lesson.html)
 
-# 你的底部块（尽量少用引号、避免转义麻烦）
+# 你的底部块
 read -r -d '' FOOTER_HTML <<'EOF'
 <footer style="text-align:center;padding:16px 0;color:#666;font-size:14px;">
-  牛爸小课堂 © 2025 ｜源码:Luzhenhua ｜Q邮：mylsm ｜<a href="/" style="color:#0b6cff;text-decoration:none;">返回首页</a>
+  凉风有信 © 2025 ｜Thanks to Luzhenhua ｜Qmail：mylsm ｜<a href="/" style="color:#0b6cff;text-decoration:none;">返回首页</a>
 </footer>
 EOF
 
@@ -40,10 +39,8 @@ for page in "${PAGES[@]}"; do
   f="dist/$page"
   [ -f "$f" ] || continue
 
-  # 1) 若已有 <footer>…</footer>，直接整体替换（大小写不敏感）
-  # 2) 否则，把 FOOTER_HTML 插入到 </body> 之前（大小写不敏感）
+  # 若已有 <footer>…</footer>，替换；否则插入 </body> 前
   if grep -qi "<footer" "$f"; then
-    # 使用 perl 做多行/大小写不敏感替换，兼容性更好
     perl -0777 -pe '
       BEGIN {
         $new = q|'$FOOTER_HTML'|;
