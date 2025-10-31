@@ -1,0 +1,28 @@
+/*
+  # Keep HTML relatively fresh in case content changes
+  Cache-Control: public, max-age=3600
+  Accept-Ranges: bytes
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+  Accept-Ranges: bytes
+
+/static/*
+  Cache-Control: public, max-age=31536000, immutable
+  Accept-Ranges: bytes
+
+/NCE1/*
+  Cache-Control: public, max-age=31536000, immutable
+  Accept-Ranges: bytes
+
+/NCE2/*
+  Cache-Control: public, max-age=31536000, immutable
+  Accept-Ranges: bytes
+
+/NCE3/*
+  Cache-Control: public, max-age=31536000, immutable
+  Accept-Ranges: bytes
+
+/NCE4/*
+  Cache-Control: public, max-age=31536000, immutable
+  Accept-Ranges: bytes
