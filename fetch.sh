@@ -23,38 +23,28 @@ rm -f dist/CNAME || true
 cp _headers dist/_headers
 cp 404.html dist/404.html
 
-# 需要处理的页面
-PAGES=(index.html book.html lesson.html)
-
-# 你的底部块
+# 生成一个可插入的片段（包含移除旧 footer 的脚本 + 新 footer）
+cat > dist/footer_snippet.html <<'EOF'
+<script>
+(function(){
+  try {
+    var old = document.getElementsByTagName('footer');
+    while (old.length) { old[0].parentNode.removeChild(old[0]); }
+  } catch(e){}
+})();
+</script>
 read -r -d '' FOOTER_HTML <<'EOF'
 <footer style="text-align:center;padding:16px 0;color:#666;font-size:14px;">
   凉风有信 © 2025 ｜Thanks to Luzhenhua ｜Qmail：mylsm ｜<a href="/" style="color:#0b6cff;text-decoration:none;">返回首页</a>
 </footer>
 EOF
 
-echo "Patching footer on pages: ${PAGES[*]}"
-
+echo "Injecting footer snippet before </body> ..."
+PAGES=(index.html book.html lesson.html)
 for page in "${PAGES[@]}"; do
   f="dist/$page"
   [ -f "$f" ] || continue
-
-  # 若已有 <footer>…</footer>，替换；否则插入 </body> 前
-  if grep -qi "<footer" "$f"; then
-    perl -0777 -pe '
-      BEGIN {
-        $new = q|'$FOOTER_HTML'|;
-      }
-      s#<footer\b.*?</footer>#$new#is
-    ' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
-  else
-    perl -0777 -pe '
-      BEGIN {
-        $new = q|'$FOOTER_HTML'|;
-      }
-      s#</body>#$new\n</body>#i
-    ' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
-  fi
+  awk 'BEGIN{IGNORECASE=1} {print} /<\/body>/{system("cat dist/footer_snippet.html")} ' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
 done
 
 echo "Build finished. dist/ is ready."
