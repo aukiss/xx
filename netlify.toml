@@ -1,3 +1,3 @@
 [build]
-  command = "bash fetch.sh"
+  command = "bash -eo pipefail fetch.sh"
   publish = "dist"

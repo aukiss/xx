@@ -24,10 +24,10 @@ cp _headers dist/_headers
 cp 404.html dist/404.html
 
 # -------------------------------
-# 👇👇👇 自动修改底部信息 👇👇👇
+# 👇 自动修改底部信息 👇
 echo "Updating footer text..."
 FOOTER_HTML='<footer style="text-align:center;padding:16px 0;color:#666;font-size:14px;">
-牛爸小课堂 © 2025 ｜用于个人学习 ｜邮箱：mylsm@qq.com ｜<a href="/" style="color:#0b6cff;text-decoration:none;">返回首页</a>
+牛爸小课堂 © 2025 ｜源码来自Luzhenhua ｜邮箱：mylsm@qq.com ｜<a href="/" style="color:#0b6cff;text-decoration:none;">返回首页</a>
 </footer>'
 
 for page in index.html book.html lesson.html; do
